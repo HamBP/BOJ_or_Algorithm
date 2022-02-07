@@ -1,23 +1,16 @@
 import kotlin.collections.HashMap
 
 fun main(args: Array<String>) {
-    val n = getNumberOfCards()
-    val cards: MutableMap<Long, Int> = getCards(n)
+    val cards: MutableMap<Long, Int> = getCards()
     val result = getCardNumber(cards)
     println(result)
 }
 
-fun getNumberOfCards() : Int {
-    with(System.`in`.bufferedReader()) {
-        return readLine().toInt()
-    }
-}
-
-fun getCards(size: Int) : MutableMap<Long, Int> {
+fun getCards() : MutableMap<Long, Int> {
     val cards = HashMap<Long, Int>()
 
     with(System.`in`.bufferedReader()) {
-        repeat(size) {
+        repeat(readLine().toInt()) {
             val card = readLine().toLong()
 
             cards[card]?.let {
