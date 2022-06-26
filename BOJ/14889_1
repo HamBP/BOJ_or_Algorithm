@@ -1,0 +1,83 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNING
+
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <queue>
+#include <cstring>
+#include <cmath>
+#include <cstdlib>
+#include <cassert>
+#include <set>
+#include <numeric>
+#include <map>
+
+using namespace std;
+
+typedef long long ll;
+
+#define INF 2100000000
+
+int dr[] = { -1, 1, 0, 0, 0, 0 };
+int dc[] = { 0, 0, -1, 1, 0, 0 };
+int dh[] = { 0, 0, 0, 0, -1, 1 };
+
+/* *** */
+
+int n;
+int graph[25][25];
+vector<int> picked, team;
+
+int getDiff() {
+	int power1 = 0;
+	int power2 = 0;
+
+	for (int i = 0; i < picked.size(); ++i) {
+		for (int j = 0; j < picked.size(); ++j) {
+			power1 += graph[picked[i]][picked[j]];
+		}
+	}
+
+	for (int i = 0; i < team.size(); ++i) {
+		for (int j = 0; j < team.size(); ++j) {
+			power2 += graph[team[i]][team[j]];
+		}
+	}
+
+	int res = abs(power1 - power2);
+	return res;
+}
+
+int answer(int cur) {
+	if (picked.size() == (n / 2) && cur == n) return getDiff();
+	if (cur >= n) return 1000000;
+
+	int res = 1000000;
+
+	team.push_back(cur);
+	res = answer(cur + 1);
+	team.pop_back();
+
+	picked.push_back(cur);
+	res = min(res, answer(cur + 1));
+	picked.pop_back();
+
+	return res;
+}
+
+int main() {
+	cin >> n;
+
+	for (int i = 0; i < n; ++i) {
+		for (int j = 0; j < n; ++j) {
+			scanf("%d", &graph[i][j]);
+		}
+	}
+
+	cout << answer(0) << endl;
+
+	return 0;
+}
